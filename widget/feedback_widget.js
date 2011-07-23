@@ -159,14 +159,6 @@ $(document).ready(function() {
         .height($(this).height());
   }
 
-  function blackout(e, el) {
-    el.addClass('blackedOut');
-  }
-
-  function unBlackout() {
-
-  }
-
   var markupTools = {
     highlight: [highlight, unHighlight],
     blackout: [blackout, unBlackout]
@@ -194,6 +186,19 @@ $(document).ready(function() {
     }
   }
 
+  function isMarked(el) {
+    if (!el[0]) {
+      el = $(el)
+    }
+    var matched = false;
+    $.each(markupTools, function(k, v) {
+      if (el.hasClass('marked' + k)) {
+        matched = true;
+      }
+    });
+    return matched;
+  }
+
   function isRestrictedElement(el) {
     if (!el[0]) {
       el = $(el);
@@ -214,7 +219,7 @@ $(document).ready(function() {
   }
 
   function fadeElement(el) {
-    if(isRestrictedElement(el)) {
+    if(isRestrictedElement(el) || isMarked(el)) {
       return;
     }
     el = $(el);
@@ -225,18 +230,45 @@ $(document).ready(function() {
     el.removeClass('highlight');
   }
 
+  function overlayCopy(el) {
+    var copy = $('<' + el[0].nodeName + '>');
+    var offset = el.offset();
+    copy.html(el.html())
+        .offset(offset)
+        .css({position: 'absolute'})
+        .width(el.width())
+        .height(el.height());
+    console.log(copy);
+    $('body').append(copy);
+  }
+
   function registerListeners() {
     var highlightableElements = ['*'];
     var orSelector = highlightableElements.join(',');
     $(orSelector, $(document.body)).hover(
        function(e) { focusElement($(this)); }, 
        function(e) { fadeElement($(this)); });
+    $(orSelector, $(document.body)).click(function(e) {
+      runMarkup(e, $(this));
+      // overlayCopy($(this));
+    });
   //    /* mouse over */ function(e) { runActiveMarkup(e, $(this)) }, 
    //   /* mouse out */ function(e) { runActiveUndoMarkup(e, $(this)) });
 
     //TODO: add click listeners
 
     // $.each(highlightableElements, function(i, name) { });
+  }
+
+  function runMarkup(e, element) {
+    $.each(markupTools, function(k, v) {
+      element.removeClass('marked' + k);
+    });
+    element.addClass('marked' + activeTool);
+    /*
+    fn = element.hasClass('marked' + activeTool) ?
+        runActiveUndoMarkup : runActiveMarkup;
+    */
   }
 
 
