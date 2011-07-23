@@ -14,14 +14,28 @@ body {
 
 #title {
   margin: 0 -10px;
-  padding: 2px 0;
+  margin-top: 10px;
+  padding: 1px 0;
   padding-left: 10px;
-  background: #99FF99;
   margin-bottom: 10px;
+  color: #ffffff;
+  background: #555 url(images/ui-bg_glass_20_555555_1x400.png) 50% 50% repeat-x
 }
 
 #title h1 {
   font-size: 15px;
+}
+
+#hideButton {
+  font-size: 25px;
+  font-weight: bold;
+  float: right;
+  vertical-align: center;
+  margin-right: 13px;
+}
+
+#controls label, button span {
+  font-size: 90%;
 }
 
 #description textarea {
@@ -39,4 +53,9 @@ body {
 
 #submitControls {
   padding-bottom: 5px;
+}
+
+#hideButton:hover {
+  color: #0078a3;
+  cursor: pointer;
 }
