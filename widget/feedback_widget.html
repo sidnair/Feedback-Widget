@@ -13,35 +13,37 @@
   <body>
     <div id="container">
       <div id="title" class="section">
-        <div id="hideButton">&ndash;</div>
+        <div id="hideButton">+</div>
         <h1>Send Feedback</h1>
       </div>
-    <div class="section">
-      <form>
-        <div id="controls">
-          <input type="radio" id="highlight" name="radio" />
-          <label for="highlight">Highlight</label>
-          
-          <input type="radio" id="blackout" name="radio" checked="checked" />
-          <label for="blackout">Blackout</label>
-<!--         
-          <input type="radio" id="annotate" name="radio" />
-          <label for="annotate">Annotate</label>
-          -->
+      <div id="widgetBody">
+        <div class="section">
+          <form>
+            <div id="controls">
+              <input type="radio" id="highlight" name="radio" />
+              <label for="highlight">Highlight</label>
+              
+              <input type="radio" id="blackout" name="radio" checked="checked" />
+              <label for="blackout">Blackout</label>
+    <!--         
+              <input type="radio" id="annotate" name="radio" />
+              <label for="annotate">Annotate</label>
+              -->
+            </div>
+          </form>
         </div>
-      </form>
-    </div>
-      <div id="description" class="section">
-        <span>Please describe the problem:</span>
-        <div id="textAreaWrapper">
-          <textarea></textarea>
+          <div id="description" class="section">
+            <span>Please describe the problem:</span>
+            <div id="textAreaWrapper">
+              <textarea></textarea>
+            </div>
+          </div>
+          <div id="submitControls" class="section">
+            <span class="button" id="submit">
+              <button>Submit</button>
+            </span>
+          </div>
         </div>
       </div>
-      <div id="submitControls" class="section">
-        <span class="button" id="submit">
-          <button>Submit</button>
-        </span>
-      </div>
-    </div>
   </body>
 </html>

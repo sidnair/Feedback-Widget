@@ -1,3 +1,28 @@
+.focusMouseOver {
+  cursor: pointer;
+}
+
+.highlight {
+  background: #F7FE2E;
+}
+
+.blackout {
+  background: black;
+}
+
+.markedblackout {
+  background: black;
+}
+
+.markedhighlight {
+  background: #F7FE2E;
+}
+
+#samples {
+  width: 500px;
+}
+
+
 #widgetFrame html {
   font-family: arial, sans-serif;
   font-size: 13px;
@@ -68,7 +93,7 @@
 #widgetFrame {
   width: 300px;
   height: 275px;
-  bottom: 0;
+  bottom: -250px;
   right: 5px;
   position: fixed;
   outline: 0;
@@ -77,5 +102,4 @@
   border: none;
   padding-bottom: 10px;
   outline: 1px #555 solid;
-  -webkit-box-shadow: 0 0 50px;
 }

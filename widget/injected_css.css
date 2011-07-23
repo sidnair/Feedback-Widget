@@ -31,3 +31,84 @@
 #samples {
   width: 500px;
 }
+
+#widgetFrame html {
+  font-family: arial, sans-serif;
+  font-size: 13px;
+}
+
+#widgetFrame body {
+}
+
+#widgetFrame .section {
+  padding-bottom: 10px;
+}
+
+#widgetFrame #title {
+  /* margin: 0 -10px; */
+  margin-top: 10px;
+  margin-left: -10px;
+  padding: 1px 0;
+  padding-left: 10px;
+  margin-bottom: 10px;
+  color: #ffffff;
+  background: #555;
+  /* background: #555 url(ui-darkness/images/ui-bg_glass_20_555555_1x400.png) 50% 50% repeat-x */
+}
+
+#widgetFrame #title h1 {
+  font-size: 18px;
+}
+
+#widgetFrame #hideButton {
+  font-size: 25px;
+  font-weight: bold;
+  float: right;
+  vertical-align: center;
+  margin-right: 13px;
+}
+
+#widgetFrame #controls label, button span {
+  font-size: 90%;
+}
+
+#widgetFrame #description textarea {
+  width: 275px;
+  height: 100px;
+  border: 1px solid gray;
+  resize: none;
+  font-family: arial, sans-serif;
+  font-size: 13px;
+}
+
+#widgetFrame #textAreaWrapper {
+  padding-top: 5px;
+}
+
+#widgetFrame #submitControls {
+  padding-bottom: 5px;
+}
+
+#widgetFrame #container {
+  margin-top: -10px;
+  margin-left: 10px;
+}
+
+#widgetFrame #hideButton:hover {
+  color: #0078a3;
+  cursor: pointer;
+}
+
+#widgetFrame {
+  width: 300px;
+  height: 275px;
+  bottom: -250px;
+  right: 5px;
+  position: fixed;
+  outline: 0;
+  z-index: 10005;
+  background: white;
+  border: none;
+  padding-bottom: 10px;
+  outline: 1px #555 solid;
+}

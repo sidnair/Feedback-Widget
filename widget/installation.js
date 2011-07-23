@@ -15,9 +15,7 @@
   function addCSS(src) {
     var newElement = document.createElement('link');
     newElement.rel = "stylesheet";
-    newElement.href =
-        ('https:' === document.location.protocol ? 'https://' : 'http://')
-        + src;
+    newElement.href = src;
     firstScriptElement.parentNode.insertBefore(newElement, firstScriptElement);
   }
 
@@ -26,8 +24,8 @@
   addScript('http://columbia.edu/~ssn2114/scripts/feedback_widget.js');
 
 
-  addCSS('columbia.edu/~ssn2114/scripts/injected_css.css');
-  addCSS('columbia.edu/~ssn2114/scripts/css/ui-darkness/jquery-ui-1.8.14.custom.css');
-  addCSS('columbia.edu/~ssn2114/scripts/css/feedback_widget.css');
+  addCSS('http://columbia.edu/~ssn2114/scripts/injected_css.css');
+  addCSS('http://columbia.edu/~ssn2114/scripts/css/ui-darkness/jquery-ui-1.8.14.custom.css');
+  addCSS('http://columbia.edu/~ssn2114/scripts/css/feedback_widget.css');
 
 })();
