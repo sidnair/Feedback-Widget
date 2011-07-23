@@ -1,0 +1,33 @@
+/* #pane {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #666;
+  opacity: 0.4;
+  z-index: 10000;
+} 
+  */
+
+.focusMouseOver {
+  cursor: pointer;
+}
+
+.highlight {
+  background: #F7FE2E;
+}
+
+.blackout {
+  background: black;
+}
+
+.markedblackout {
+  background: black;
+}
+
+.markedhighlight {
+  background: #F7FE2E;
+}
+
+#samples {
+  width: 500px;
+}
