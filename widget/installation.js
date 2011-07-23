@@ -5,7 +5,7 @@
 
   function addScript(src) {
     var newScriptElement = document.createElement('script');
-    newScriptElement.async = true;
+    newScriptElement.async = false;
     newScriptElement.src =
         ('https:' === document.location.protocol ? 'https://' : 'http://')
         + src;
@@ -15,15 +15,20 @@
 
   function addCSS(src) {
     var newElement = document.createElement('link');
-    newScriptElement.href =
+    newElement.rel = "stylesheet";
+    newElement.href =
         ('https:' === document.location.protocol ? 'https://' : 'http://')
         + src;
-    firstScriptElement.parentNode.insertBefore(newScriptElement,
-        firstScriptElement);
+    firstScriptElement.parentNode.insertBefore(newElement, firstScriptElement);
   }
 
   addScript('ajax.googleapis.com/ajax/libs/jquery/1/jquery.js');
+  addScript('columbia.edu/~ssn2114/scripts/js/jquery-ui-1.8.14.custom.min.js');
   addScript('columbia.edu/~ssn2114/scripts/feedback_widget.js');
-  addScript('columbia.edu/~ssn2114/scripts/injected_css.css');
+
+
+  addCSS('columbia.edu/~ssn2114/scripts/injected_css.css');
+  addCSS('columbia.edu/~ssn2114/scripts/css/ui-darkness/jquery-ui-1.8.14.custom.css');
+  addCSS('columbia.edu/~ssn2114/scripts/css/jquery-ui-1.8.14.custom.css');
 
 })();

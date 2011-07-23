@@ -5,6 +5,15 @@ $(document).ready(function() {
   var IFRAME_OVERLAY_SOURCE = "overlay_page.html";
   var BASE_Z_INDEX = 10000;
 
+  var OPACITY_MULTIPLIER = 0.6;
+  function setOpacity(el, n) {
+    $(el).css('opacity', n)
+  }
+
+  function getOpacity(el) {
+    return $(el).css('opacity');
+  }
+
   function getFrameStyle(styleObj) {
     var styleAttrsString = '';
     $.each(styleObj, function(k, v) {
@@ -66,20 +75,50 @@ $(document).ready(function() {
   }
   */
 
+  function iterateAll(fn) {
+    $('*', document.body).each(function(i, el) {
+      if (!isRestrictedElement(el)) {
+        fn(i, el);
+      }
+
+      /* if (!$('#widgetFrame')[0] ||
+        (el.id.indexOf('Frame') === -1 && !$.contains($('#widgetFrame'), el))) { */
+      // }
+    });
+  }
+
+  function fadeAllElements() {
+    /*
+    $('*', document.body).each(function(i, el) {
+      if (el.id.indexOf('Frame') === -1 && !$('#widgetFrame').contains(el)) {
+        fadeElement(el);
+        $(el).addClass('focusMouseOver');
+      }
+    });
+    */
+    iterateAll(function(i, el) {
+      fadeElement(el);
+      $(el).addClass('focusMouseOver');
+    });
+  }
+
+  function focusAllElements() {
+    iterateAll(function(i, el) {
+      focusElement(el);
+      $(el).removeClass('focusMouseOver');
+    });
+    /*
+    $('*', document.body).each(function(i, el) {
+      if (el.id.indexOf('Frame') === -1) {
+        focusElement(el);
+        $(el).removeClass('focusMouseOver');
+      }
+    });
+    */
+  }
+
   function injectOverlayLayout() {
     // for now, just reduce opacity...
-    var OPACITY_MULTIPLIER = 0.6;
-    function setOpacity(el, n) {
-      $(el).css('opacity', n)
-    }
-
-    function getOpacity(el) {
-      return $(el).css('opacity');
-    }
-
-    $('*', document.body).each(function(i, el) {
-      setOpacity(el, getOpacity(el) * OPACITY_MULTIPLIER);
-    });
     /*
     var pane = $('<div class="overlay" id="pane"></div>');
     pane.appendTo($('body'));
@@ -121,10 +160,11 @@ $(document).ready(function() {
   }
 
   function blackout(e, el) {
-    el.addClass('focus');
+    el.addClass('blackedOut');
   }
 
   function unBlackout() {
+
   }
 
   var markupTools = {
@@ -143,12 +183,56 @@ $(document).ready(function() {
     markupTools[activeTool][1](e, el);
   }
 
+  function focusElement(el) {
+    iterateAll(function(i, node) {
+      fadeElement(node);
+    });
+    if (!isRestrictedElement(el)) {
+      setOpacity(el, getOpacity(el) / OPACITY_MULTIPLIER);
+      el.removeClass('faded');
+      el.addClass('highlight');
+    }
+  }
+
+  function isRestrictedElement(el) {
+    if (!el[0]) {
+      el = $(el);
+    }
+    if (!el[0]) {
+      return true;
+    }
+    if (el[0].nodeName === "BODY") {
+      return true;
+    }
+    if (!$('#widgetFrame')[0]) {
+      return false;
+    }
+    if (el[0].id.indexOf('Frame') > -1 || $.contains($('#widgetFrame')[0], el[0])) {
+      return true;
+    }
+    return false;
+  }
+
+  function fadeElement(el) {
+    if(isRestrictedElement(el)) {
+      return;
+    }
+    el = $(el);
+    if (!el.hasClass('faded')) {
+      setOpacity(el, getOpacity(el) * OPACITY_MULTIPLIER);
+      el.addClass('faded');
+    }
+    el.removeClass('highlight');
+  }
+
   function registerListeners() {
-    var highlightableElements = ['h1'];
+    var highlightableElements = ['*'];
     var orSelector = highlightableElements.join(',');
-    $(orSelector).hover(
-      /* mouse over */ function(e) { runActiveMarkup(e, $(this)) }, 
-      /* mouse out */ function(e) { runActiveUndoMarkup(e, $(this)) });
+    $(orSelector, $(document.body)).hover(
+       function(e) { focusElement($(this)); }, 
+       function(e) { fadeElement($(this)); });
+  //    /* mouse over */ function(e) { runActiveMarkup(e, $(this)) }, 
+   //   /* mouse out */ function(e) { runActiveUndoMarkup(e, $(this)) });
 
     //TODO: add click listeners
 
@@ -157,7 +241,8 @@ $(document).ready(function() {
 
 
   // injectInvisibleHtml();
-  injectOverlayLayout();
+  // injectOverlayLayout();
+  fadeAllElements();
   injectWidgetLayout();
   registerListeners();
 
