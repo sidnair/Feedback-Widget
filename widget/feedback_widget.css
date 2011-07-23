@@ -1,0 +1,42 @@
+html {
+  font-family: arial, sans-serif;
+  font-size: 13px;
+}
+
+body {
+  margin: 10px;
+  margin-top: -10px;
+}
+
+.section {
+  padding-bottom: 10px;
+}
+
+#title {
+  margin: 0 -10px;
+  padding: 2px 0;
+  padding-left: 10px;
+  background: #99FF99;
+  margin-bottom: 10px;
+}
+
+#title h1 {
+  font-size: 15px;
+}
+
+#description textarea {
+  width: 224px;
+  height: 100px;
+  border: 1px solid gray;
+  resize: none;
+  font-family: arial, sans-serif;
+  font-size: 13px;
+}
+
+#textAreaWrapper {
+  padding-top: 5px;
+}
+
+#submitControls {
+  padding-bottom: 5px;
+}

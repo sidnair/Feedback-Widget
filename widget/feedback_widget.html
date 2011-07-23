@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="feedback_widget.css" rel="stylesheet">
+  </head>
+  <body>
+    <div id="container">
+      <div id="title" class="section">
+        <h1>Send Feedback</h1>
+      </div>
+
+      <div id="controls" class="section">
+        <span class="button" id="highlight">
+          <button>Highlight</button>
+          <!--
+            <div id="buttonImage"></div
+            <div id="buttonText">Highlight</div>
+          -->
+        </span>
+        <span class="button" id="blackout">
+          <button>Blackout</button>
+        </span>
+        <span class="button" id="annotate">
+          <button>Annotate</button>
+        </span>
+      </div>
+
+      <div id="description" class="section">
+        <span>Please describe the problem:</span>
+        <div id="textAreaWrapper">
+          <textarea></textarea>
+        </div>
+      </div>
+
+      <!-- INCLUDE SCREENSHOT? -->
+
+      <div id="submitControls" class="section">
+        <span class="button" id="submit">
+          <button>Submit</button>
+        </span>
+        <span id="screenshotCheckbox">
+          <input type="checkbox" checked>Include Screenshot?</input>
+        </span>
+      </div>
+    </div>
+  </body>
+</html>
