@@ -1,14 +1,31 @@
-var runWidget = function() {
+(function() {
+
+var oldFeedbackWidget = window.feedbackWidget;
+feedbackWidget = {};
+
+feedbackWidget.runWidget = function() {
     console.log('executing');
 
+var globalName = 'feedbackWidget';
+
+feedbackWidget.restoreNamespace = function(newNamespace) {
+  window[newNamespace] = feedbackWidget;
+  window.feedbackWidget = oldFeebackWidget;
+  var globalName = newNamespace;
+}
+
+
   // var IFRAME_SOURCE = "feedback_widget.html";
-  
-  var IFRAME_CONTENT = ' <!DOCTYPE html> <html>   <head>     <link href="css/ui-darkness/jquery-ui-1.8.14.custom.css" rel="stylesheet">     <link href="css/feedback_widget.css" rel="stylesheet">      <!--      <script src="js/jquery-1.5.1.min.js"></script>     <script src="js/jquery-ui-1.8.14.custom.min.js"></script>     <script src="js/application.js"></script>     -->   </head>   <body>     <div id="container">       <div id="title" class="section">         <div id="hideButton">+</div>         <h1>Send Feedback</h1>       </div>       <div id="widgetBody">         <div class="section">           <form>             <div id="controls">               <input type="radio" id="highlight" name="radio" />               <label for="highlight">Highlight</label>                              <input type="radio" id="blackout" name="radio" checked="checked" />               <label for="blackout">Blackout</label>     <!--                        <input type="radio" id="annotate" name="radio" />               <label for="annotate">Annotate</label>               -->             </div>           </form>         </div>           <div id="description" class="section">             <span>Please describe the problem:</span>             <div id="textAreaWrapper">               <textarea></textarea>             </div>           </div>           <div id="submitControls" class="section">             <span class="button" id="submit">               <button>Submit</button>             </span>           </div>         </div>       </div>   </body> </html> ';
+ 
+
+ var IFRAME_CONTENT =  '<!DOCTYPE html> <html>   <head>     <!--      <script src="js/jquery-1.5.1.min.js"></script>     <script src="js/jquery-ui-1.8.14.custom.min.js"></script>     <script src="js/application.js"></script>     -->   </head>   <body>     <div id="container">       <div id="title" class="section">         <div id="hideButton">+</div>         <h1>Send Feedback</h1>       </div>       <div id="widgetBody">         <div class="section">           <form>             <div id="controls">               <input type="radio" id="highlight" name="radio" />               <label for="highlight">Highlight</label>                              <input type="radio" id="blackout" name="radio" checked="checked" />               <label for="blackout">Blackout</label>     <!--                        <input type="radio" id="annotate" name="radio" />               <label for="annotate">Annotate</label>               -->             </div>           </form>         </div>           <div id="description" class="section">             <span>Please describe the problem:</span>             <div id="textAreaWrapper">               <textarea></textarea>             </div>           </div>           <div id="submitControls" class="section">             <span class="button" id="submit">               <button>Submit</button>             </span>           </div>         </div>       </div>   </body> </html> '
+
+//  var IFRAME_CONTENT = ' <!DOCTYPE html> <html>   <head>     <link href="css/ui-darkness/jquery-ui-1.8.14.custom.css" rel="stylesheet">     <link href="css/feedback_widget.css" rel="stylesheet">      <!--      <script src="js/jquery-1.5.1.min.js"></script>     <script src="js/jquery-ui-1.8.14.custom.min.js"></script>     <script src="js/application.js"></script>     -->   </head>   <body>     <div id="container">       <div id="title" class="section">         <div id="hideButton">+</div>         <h1>Send Feedback</h1>       </div>       <div id="widgetBody">         <div class="section">           <form>             <div id="controls">               <input type="radio" id="highlight" name="radio" />               <label for="highlight">Highlight</label>                              <input type="radio" id="blackout" name="radio" checked="checked" />               <label for="blackout">Blackout</label>     <!--                        <input type="radio" id="annotate" name="radio" />               <label for="annotate">Annotate</label>               -->             </div>           </form>         </div>           <div id="description" class="section">             <span>Please describe the problem:</span>             <div id="textAreaWrapper">               <textarea></textarea>             </div>           </div>           <div id="submitControls" class="section">             <span class="button" id="submit">               <button>Submit</button>             </span>           </div>         </div>       </div>   </body> </html> ';
 
   var IFRAME_OVERLAY_SOURCE = "overlay_page.html";
   var BASE_Z_INDEX = 10000;
 
-  var OPACITY_MULTIPLIER = 0.9;
+  var OPACITY_MULTIPLIER = 1;
   function setOpacity(el, n) {
     $(el).css('opacity', n)
   }
@@ -178,10 +195,25 @@ var runWidget = function() {
     markupTools[activeTool][1](e, el);
   }
 
+  var focused = [];
+  var faded = [];
+  function iterateFocused(fn) {
+    $.each(focused, fn);
+    focused = [];
+  }
+
+
   function focusElement(el) {
+    /*
     iterateAll(function(i, node) {
       fadeElement(node);
     });
+    */
+
+    iterateFocused(function(i, node) {
+      fadeElement(node);
+    });
+
     if (!isRestrictedElement(el)) {
       setOpacity(el, getOpacity(el) / OPACITY_MULTIPLIER);
       el.removeClass('faded');
@@ -189,13 +221,12 @@ var runWidget = function() {
         el.removeClass(k);
       });
       el.addClass(activeTool);
+      focused.push(el);
     }
   }
 
   function isMarked(el) {
-    if (!el[0]) {
-      el = $(el)
-    }
+    el = $(el)
     var matched = false;
     $.each(markupTools, function(k, v) {
       if (!el.hasClass) {
@@ -210,9 +241,7 @@ var runWidget = function() {
   }
 
   function isRestrictedElement(el) {
-    if (!el[0]) {
-      el = $(el);
-    }
+    el = $(el);
     if (!el[0]) {
       return true;
     }
@@ -239,6 +268,7 @@ var runWidget = function() {
     }
     el.removeClass('highlight');
     el.removeClass('blackout');
+    faded.push(el);
   }
 
   function overlayCopy(el) {
@@ -263,6 +293,13 @@ var runWidget = function() {
       $(el).click(function(e) {
         if ($(this).hasClass('highlight') || $(this).hasClass('blackout')) {
           runMarkup(e, $(this));
+        } else {
+          var highlighted = $(this).find('.highlight') || $(this).find('.blackout');
+          if (highlighted) {
+            runMarkup(e, $(this));
+          } else {
+            console.log('...');
+          }
         }
         return false;
       });
@@ -301,29 +338,42 @@ var runWidget = function() {
     });
     $('#blackout').click();
   }
-    function toggleFeedbackVisible() {
+
+  function toggleFeedbackVisible() {
+    $('#hideButton').one('click', function() {
+      $('#widgetFrame').animate({
+        bottom: '0'
+      }, 'slow');
+      $('#hideButton').html('&ndash;');
       $('#hideButton').one('click', function() {
+        toggleFeedbackVisible();
         $('#widgetFrame').animate({
-          bottom: '0'
+          bottom: '-252px'
         }, 'slow');
-        $('#hideButton').html('&ndash;');
-        $('#hideButton').one('click', function() {
-          toggleFeedbackVisible();
-          $('#widgetFrame').animate({
-            bottom: '-250px'
-          }, 'slow');
-          $('#hideButton').html('+');
-        });
+        $('#hideButton').html('+');
       });
-    }
+    });
+  }
+
+  function registerSubmitCallback() {
+    $('#submitControls button').click(function() {
+      if (feedbackWidget.callback) {
+        var data = $(document.body).html();
+        window[globalName].callback(data);
+      }
+    });
+  }
 
 
-  // injectInvisibleHtml();
-  // injectOverlayLayout();
-  fadeAllElements();
-  injectWidgetLayout();
-  registerListeners();
-  registerRadioListeners();
-  toggleFeedbackVisible();
+    // injectInvisibleHtml();
+    // injectOverlayLayout();
+    fadeAllElements();
+    injectWidgetLayout();
+    registerListeners();
+    registerRadioListeners();
+    toggleFeedbackVisible();
+    registerSubmitCallback();
+  };
 
-};
+
+})();
